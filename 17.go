@@ -10,8 +10,8 @@ func main()  {
 	defer fmt.Println("aaaaaaa")
 	defer fmt.Println("bbbbbbb")
 
-	test(0)
+	defer test(0)
 
 	defer  fmt.Println("ccccccccc")
-	 fmt.Println("dddddddd")
+	defer fmt.Println("dddddddd")
 }
