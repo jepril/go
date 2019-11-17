@@ -35,7 +35,7 @@ func main() {
 		}
 		dom.Find(".row").Each(func(i int, selection *goquery.Selection){
 		//	fmt.Println(selection.Text())
-			selection.Find(". text").Each(func(i int, title *goquery.Selection) {
+			selection.Find(".website").Each(func(i int, title *goquery.Selection) {
 		//		fmt.Println(title.Text())
 				fmt.Printf("%3d   ", num)
 				fmt.Println(title.Text())
