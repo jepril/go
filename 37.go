@@ -20,12 +20,12 @@ func Writefile(path string)  {
 		buf	=	fmt.Sprintf("i=%d\n",i)
 		fmt.Println("buf = ",buf)
 		
-		n,err	:=	f.WriteString(buf)
+		_,err	:=	f.WriteString(buf)
 		if err != nil {
 			fmt.Println("err	=	",err)
 			return 
 		}
-		fmt.Println("n	=	",n)
+	//	fmt.Println("n	=	",n)
 	}
 }
 

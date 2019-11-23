@@ -5,23 +5,77 @@ import (
     "fmt"
     "net/http"
     "time"
+    "os"
+    "io"
 )
 
-func main() {
-	fmt.Println("This is wbserver base!")
-	
-	//注册
-	fmt.Println("请注册")
-	var name string
-	var	password	int
+//var Users = make ([]User,0)
+var userId  int=1
 
-	fmt.Println("name:")
-	fmt.Scan(&name)
-	fmt.Println("password:")
-	fmt.Scan(&password)
+type    User    struct{
+    Id  int `json:"-"`
+    Name    string
+    Password    int
+}
+
+func WriteFile(path string)  {
+    f,err := os.Create(path)
+    if err  !=nil{
+        fmt.Println("err = ",err)
+        return
+    }
+
+    defer f.Close()
+
+    var user User
+    fmt.Println("name")
+    fmt.Scan(&user.Name)
+    fmt.Println("password")
+    fmt.Scan(&user.Password)
+//    var user User
+//json.Unmarshal(infor,&user)
+
+//user.Id = userId
+//userId+=1
+//Users=append(Users,user)
+}
+
+func Readfile(path string,a int) (buf []byte ) {
+f , err := os.Open(path)
+if err != nil {
+fmt.Println("err",err)
+return
+}
+
+defer	f.Close()
+//buf = make([]User, 1024*2)
+
+n , err1 := f.Read(buf)
+if err != nil && err != io.EOF {
+    fmt.Println("err1 = ",err1)
+    return 
+}
+    if a==3 {
+        fmt.Println("buf = ",string(buf[:n]))
+    }
+return
+}
+
+func main() {
+    
+    var a int
+    var buf []byte
+	//注册
+    fmt.Println("1注册")
+    fmt.Println("2登陆")
+    fmt.Println("3查看信息")
+    fmt.Scan(&a)
 	
 	//想把这些name，password存到文件里，等待调用
-	
+    path:="1.txt"
+    WriteFile(path)
+    Readfile(path,a)
+    buf1:=User(buf)
 
     http.HandleFunc("/login", LoginTask)
     //服务器要监听的主机地址和端口号
@@ -44,7 +98,7 @@ func NewBaseJsonBean() *BaseJsonBean {
 
 func LoginTask(w http.ResponseWriter, req *http.Request) {
 	fmt.Println("loginTask is running")
-	
+    
     time.Sleep(time.Second * 2)
     //获取客户端通过GET/POST方式传递的参数
     req.ParseForm()
@@ -59,7 +113,7 @@ func LoginTask(w http.ResponseWriter, req *http.Request) {
     passWord := param_passWord[0]
     s := "userName:" + userName + ",password:" + passWord
     fmt.Println(s)
-    if userName == "wangbiao" && passWord == "123456" {
+    if userName ==  buf.Name&& passWord == buf.Password  {
         result.Code = 100
         result.Message = "登录成功"
     } else {
