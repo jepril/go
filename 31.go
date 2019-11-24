@@ -1,14 +1,15 @@
 package main
 
-import ."fmt"
+import . "fmt"
 
 type long int
-func (tmp long)Add(o,a long) long {
-	return tmp + o +a
+
+func (tmp long) Add(o, a long) long {
+	return tmp + o + a
 }
 
-func main()  {
+func main() {
 	var a long = 2
-	r := a.Add(3,4)
-	Println("r = ",r)
+	r := a.Add(3, 4)
+	Println("r = ", r)
 }

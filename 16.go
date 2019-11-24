@@ -2,16 +2,16 @@ package main
 
 import "fmt"
 
-func test(a int)  {
-	fmt.Println(100/a)
+func test(a int) {
+	fmt.Println(100 / a)
 }
 
-func main()  {
+func main() {
 	defer fmt.Println("aaaaaaa")
 	defer fmt.Println("bbbbbbb")
 
 	test(0)
 
-	defer  fmt.Println("ccccccccc")
-	 fmt.Println("dddddddd")
+	defer fmt.Println("ccccccccc")
+	fmt.Println("dddddddd")
 }

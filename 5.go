@@ -2,11 +2,11 @@ package main
 
 import "fmt"
 
-func my()int{
+func my() int {
 	return 9
 }
 
-func main(){
+func main() {
 	a := my()
-	fmt.Println("a=",a)
+	fmt.Println("a=", a)
 }

@@ -1,27 +1,27 @@
 package main
 
-import	."fmt"
+import . "fmt"
 
-func testa()  {
+func testa() {
 	Println("aaaaaaaa")
 }
 
-func testb(n int)  {
-	defer	func ()  {
-		if err := recover() ;err != nil {
+func testb(n int) {
+	defer func() {
+		if err := recover(); err != nil {
 			Println(err)
 		}
 	}()
 	var a [10]int
-	a[n] =999
-	Println("a[n] = ",a[n])
+	a[n] = 999
+	Println("a[n] = ", a[n])
 }
 
-func testc()  {
+func testc() {
 	Println("cccccccc")
 }
 
-func main()  {
+func main() {
 	testa()
 	testb(5)
 	testc()

@@ -1,17 +1,17 @@
-package main 
+package main
 
-import ."fmt"
+import . "fmt"
 
-func pf(a int)(b int ) {
-	b = a*a
+func pf(a int) (b int) {
+	b = a * a
 	return
 }
 
-func main()  {
+func main() {
 	var a int
 	Printf("a=")
 	Scan(&a)
 
-	b:=pf(a)
-	Printf("%d",b)
+	b := pf(a)
+	Printf("%d", b)
 }

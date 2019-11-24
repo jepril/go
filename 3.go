@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func main(){
+func main() {
 
 	var n int
 	fmt.Println("请输入楼层：")
@@ -17,10 +17,10 @@ func main(){
 		fallthrough
 	case 3:
 		fmt.Printf("3楼")
-                fallthrough
+		fallthrough
 	case 4:
 		fmt.Printf("4楼")
-                fallthrough
+		fallthrough
 	case 5:
 		fmt.Printf("else")
 	}

@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
-	"github.com/PuerkitoBio/goquery"
 )
 
 func main() {
@@ -32,10 +32,10 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		dom.Find(".search-tab").Each(func(i int, selection *goquery.Selection){
-		//	fmt.Println(selection.Text())
+		dom.Find(".search-tab").Each(func(i int, selection *goquery.Selection) {
+			//	fmt.Println(selection.Text())
 			selection.Find(".tit").Each(func(i int, title *goquery.Selection) {
-		//		fmt.Println(title.Text())
+				//		fmt.Println(title.Text())
 				fmt.Printf("%3d   ", num)
 				fmt.Println(title.Text())
 				num++

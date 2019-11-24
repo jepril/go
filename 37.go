@@ -1,53 +1,53 @@
 package main
 
-import	(
+import (
 	"fmt"
 	"io"
 	"os"
 )
 
-func Writefile(path string)  {
-	f	,err	:=os.Create(path)
+func Writefile(path string) {
+	f, err := os.Create(path)
 	if err != nil {
-		fmt.Println("err	=	",err)
-		return 
+		fmt.Println("err	=	", err)
+		return
 	}
-	defer	f.Close()
+	defer f.Close()
 
-	var	buf	string
+	var buf string
 
 	for i := 0; i < 10; i++ {
-		buf	=	fmt.Sprintf("i=%d\n",i)
-		fmt.Println("buf = ",buf)
-		
-		_,err	:=	f.WriteString(buf)
+		buf = fmt.Sprintf("i=%d\n", i)
+		fmt.Println("buf = ", buf)
+
+		_, err := f.WriteString(buf)
 		if err != nil {
-			fmt.Println("err	=	",err)
-			return 
+			fmt.Println("err	=	", err)
+			return
 		}
-	//	fmt.Println("n	=	",n)
+		//	fmt.Println("n	=	",n)
 	}
 }
 
-func Readfile(path string)  {
-	f , err := os.Open(path)
+func Readfile(path string) {
+	f, err := os.Open(path)
 	if err != nil {
-	fmt.Println("err",err)
-	return
+		fmt.Println("err", err)
+		return
 	}
 
-	defer	f.Close()
+	defer f.Close()
 	buf := make([]byte, 1024*2)
 
-	n , err1 := f.Read(buf)
+	n, err1 := f.Read(buf)
 	if err != nil && err != io.EOF {
-		fmt.Println("err1 = ",err1)
-		return 
+		fmt.Println("err1 = ", err1)
+		return
 	}
 
-	fmt.Println("buf = ",string(buf[:n]))
+	fmt.Println("buf = ", string(buf[:n]))
 }
-func main(){
+func main() {
 	path := "./aaa.txt"
 
 	Writefile(path)

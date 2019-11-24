@@ -1,8 +1,8 @@
 package main
 
-import ."fmt"
-import	"strings"
+import . "fmt"
+import "strings"
 
-func main()  {
-	Printf("%q",strings.Trim("baaa !!!","b"))
+func main() {
+	Printf("%q", strings.Trim("baaa !!!", "b"))
 }

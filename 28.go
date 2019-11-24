@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
-	"github.com/PuerkitoBio/goquery"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 	num := 1
 
 	for i := 1; i <= 2; i++ {
-		requestUrl := "http://studygolang.com/search?q=" + keyword + "&f=title&p=" + strconv.Itoa(i) 
+		requestUrl := "http://studygolang.com/search?q=" + keyword + "&f=title&p=" + strconv.Itoa(i)
 		rp, err := http.Get(requestUrl)
 		if err != nil {
 			panic(err)
@@ -33,10 +33,10 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		dom.Find(".row").Each(func(i int, selection *goquery.Selection){
-		//	fmt.Println(selection.Text())
+		dom.Find(".row").Each(func(i int, selection *goquery.Selection) {
+			//	fmt.Println(selection.Text())
 			selection.Find(".website").Each(func(i int, title *goquery.Selection) {
-		//		fmt.Println(title.Text())
+				//		fmt.Println(title.Text())
 				fmt.Printf("%3d   ", num)
 				fmt.Println(title.Text())
 				num++
