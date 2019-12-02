@@ -10,7 +10,6 @@ func main() {
 	fmt.Printf("%v  %v  %v", i, j, k)
 }
 
-
 func Fibo1(n int) int {
 	if n == 0 {
 		return 0
@@ -22,7 +21,6 @@ func Fibo1(n int) int {
 		return -1
 	}
 }
-
 
 func Fibo2(n int) int {
 	if n < 0 {
@@ -41,7 +39,6 @@ func Fibo2(n int) int {
 		return result
 	}
 }
-
 
 func Fibo3(n int) int {
 	if n < 0 {
