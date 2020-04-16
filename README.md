@@ -1,9 +1,9 @@
-#golang的context
+# golang的context
 
-##一个简单的并发
+## 一个简单的并发
 [举个例子](https://play.golang.org/p/yBiFEXzpu5b)
 
-##什么是context
+## 什么是context
 [这是一个chan+select来结束一个goroutine的方式]
 （https://play.golang.org/p/ZZ6EjeZjfj7）
 
@@ -13,7 +13,7 @@
 [刚刚是控制一个goroutine，现在控制三个]
 （https://play.golang.org/p/128CPyFdi-P）
 
-##golang内置的context包
+## golang内置的context包
 context包可以提供一个请求从API请求边界到各goroutine的请求域数据传递、取消信号及截至时间等能力。
 
 向服务器的传入请求应创建一个上下文，而对服务器的传出调用应接受一个上下文。它们之间的函数调用链必须传播Context，可以选择将其替换为使用WithCancel，WithDeadline，WithTimeout或WithValue创建的派生Context。取消上下文后，从该上下文派生的所有上下文也会被取消。
@@ -24,7 +24,7 @@ WithCancel，WithDeadline和WithTimeout函数采用Context（父级）并返回�
 
 不要将上下文存储在结构类型中；而是将上下文明确传递给需要它的每个函数。Context应该是第一个参数，通常命名为ctx
 
-###context.Context
+### context.Context
 >type Context interface {
 >    Deadline() (deadline time.Time, ok bool)
 >    Done() <-chan struct{}
@@ -37,7 +37,8 @@ WithCancel，WithDeadline和WithTimeout函数采用Context（父级）并返回�
 Deadline|返回一个time.Time，表示当前Context应该结束的时间，ok则表示有结束时间
 Done|当Context被取消或者超时时候返回的一个close的channel，告诉给context相关的函数要停止当前工作然后返回了。(这个有点像全局广播)
 Err|context被取消的原因
-Value|context实现共享数据存储的地方，是协程安全的（还记得之前有说过map是不安全的？所以遇到map的结构,如果不是sync.Map,需要加锁来进行操作）
+Value|context实现共享数据存储的地方，是协程安全的（还记得之前有说过map是不安全的？所以遇到map的结构,如果不是sync.Map,需要加锁来进行操作）|
+
 以上常用的就是Done，如果Context取消的时候，我们就可以得到一个关闭的chan，关闭的chan是可以读取的，所以只要可以读取的时候，就意味着收到Context取消的信号了，以下是这个方法的经典用法。
 ```
   func Stream(ctx context.Context, out chan<- Value) error {
@@ -95,7 +96,7 @@ func (*emptyCtx) Value(key interface{}) interface{} {
 
 在多数情况下，如果当前函数没有上下文作为入参，我们都会使用 [`context.Background`]作为起始的上下文向下传递。
 
-###继承衍生
+### 继承衍生
 
 ```
 func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
@@ -112,7 +113,7 @@ WithDeadline函数，和WithCancel差不多，它会多传递一个截止时间�
 WithTimeout和WithDeadline基本上一样，这个表示是超时自动取消，是多少时间后自动取消Context的意思。
 WithValue函数和取消Context无关，它是为了生成一个绑定了一个键值对数据的Context
 
-####context.Withcancel
+#### context.Withcancel
 `context.WithCancel`函数能够从 `context.Context` 中衍生出一个新的子上下文并返回用于取消该上下文的函数（CancelFunc）。一旦我们执行返回的取消函数，当前上下文以及它的子上下文都会被取消，所有的 Goroutine 都会同步收到这一取消信号。
 ![image.png](https://upload-images.jianshu.io/upload_images/22969962-3bc5b3b63fdc8960.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ```
@@ -125,7 +126,7 @@ func WithCancel(parent Context) (ctx Context, cancel CancelFunc) {
 这个代码的实现是一个套娃！！！我放个链接，有空的可以看看，[戳这]([https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-context/](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-context/)
 )
 
-####context.Withvalue
+#### context.Withvalue
 传值方法
 先上代码
 ```
@@ -146,7 +147,7 @@ func WithValue(parent Context, key, val interface{}) Context {
 记住，使用WithValue传值，一般是必须的值，不要什么值都传递。
 
 
-##小结
+## 小结
 1.不要把Context放在结构体中，要以参数的方式传递
 2.以Context作为参数的函数方法，应该把Context作为第一个参数，放在第一位。
 3.给一个函数方法传递Context的时候，不要传递nil，如果不知道传递什么，就使用context.TODO
