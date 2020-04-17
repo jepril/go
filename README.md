@@ -1,9 +1,9 @@
-#golang的context
+# golang的context
 
-##一个简单的并发
+## 一个简单的并发
 [举个例子](https://play.golang.org/p/yBiFEXzpu5b)
 
-##什么是context
+## 什么是context
 
 我理解的context类似于一个保存了状态的object，他被翻译为上下文，但其实它更像环境状态，记载了当前情况下程序执行状态，也就是上文的状态，会影响下文的发展。
 每个Goroutine在执行之前，都要先知道“程序当前的执行状态”。通常，将这些执行状态封装在一个Context变量中，传递到要执行的Goroutine中。当状态发生了变化，和这个状态进行过交互的一个或者多个Goroutine也会发生相应的变化。
@@ -11,7 +11,7 @@
 或者，再简单一点，代码c = a + b
 a,b的value就是context。
 
-##结束一个goroutine
+## 结束一个goroutine
 
 我们都知道一个goroutine启动后，我们是无法控制他的，大部分情况是等待它自己结束，那么如果这个goroutine是一个不会自己结束的后台goroutine呢？比如监控等，会一直运行的。
 
@@ -29,7 +29,7 @@ a,b的value就是context。
 
 [刚刚是控制一个goroutine，现在控制三个](https://play.golang.org/p/128CPyFdi-P)
 
-##golang内置的context包
+## golang内置的context包
 context包可以提供一个请求从API请求边界到各goroutine的请求域数据传递、取消信号及截至时间等能力。
 
 向服务器的传入请求应创建一个上下文，而对服务器的传出调用应接受一个上下文。它们之间的函数调用链必须传播Context，可以选择将其替换为使用WithCancel，WithDeadline，WithTimeout或WithValue创建的派生Context。取消上下文后，从该上下文派生的所有上下文也会被取消。
@@ -42,7 +42,7 @@ Goroutine的创建和调用关系是分层级的。更靠顶部的Goroutine应�
 
 
 
-###context.Context
+### context.Context
 ```
 type Context interface {
     Deadline() (deadline time.Time, ok bool)
@@ -75,7 +75,7 @@ Value|context实现共享数据存储的地方，是协程安全的
   }
   ```
 
-###基本数据结构
+### 基本数据结构
 context的创建者称为root节点，其一般是一个处理上下文的独立goroutine。root节点负责创建Context的具体对象，并将其传递到其下游调用的goroutine. 下游的goroutine可以继续封装改Context对象，再传递更下游的goroutine.这些下游goroutine的Context 对象实例都要逐层向上注册。这样通过root节点的Context对象就可以遍历整个Context对象树，所以通知也能通知到下游的goroutine.
 
 
@@ -119,7 +119,7 @@ func (*emptyCtx) Value(key interface{}) interface{} {
 
 在多数情况下，如果当前函数没有上下文作为入参，我们都会使用 [`context.Background`]作为起始的上下文向下传递。
 
-###继承衍生
+### 继承衍生
 
 ```
 func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
@@ -136,7 +136,7 @@ WithDeadline函数，和WithCancel差不多，它会多传递一个截止时间�
 WithTimeout和WithDeadline基本上一样，这个表示是超时自动取消，是多少时间后自动取消Context的意思。
 WithValue函数和取消Context无关，它是为了生成一个绑定了一个键值对数据的Context
 
-####context.Withcancel
+#### context.Withcancel
 `context.WithCancel`函数能够从 `context.Context` 中衍生出一个新的子上下文并返回用于取消该上下文的函数（CancelFunc）。一旦我们执行返回的取消函数，当前上下文以及它的子上下文都会被取消，所有的 Goroutine 都会同步收到这一取消信号。
 ![image.png](https://upload-images.jianshu.io/upload_images/22969962-3bc5b3b63fdc8960.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ```
@@ -149,7 +149,7 @@ func WithCancel(parent Context) (ctx Context, cancel CancelFunc) {
 这个代码的实现是一个套娃！！！我放个链接，有空的可以看看，[戳这]([https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-context/](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-context/)
 )
 
-####context.Withvalue
+#### context.Withvalue
 ```
 func WithValue(parent Context, key, val interface{}) Context {
 	if key == nil {
@@ -169,12 +169,12 @@ func WithValue(parent Context, key, val interface{}) Context {
 
 ![image.png](https://upload-images.jianshu.io/upload_images/22969962-6acf85fd36b2b0ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-###原理
+### 原理
 Context 的调用应该是链式的，通过WithCancel，WithDeadline，WithTimeout或WithValue派生出新的 Context。当父 Context 被取消时，其派生的所有 Context 都将取消。
 
 通过4个context.WithXXX都将返回新的 Context 和 CancelFunc。调用 CancelFunc 将取消子代，移除父代对子代的引用，并且停止所有定时器。未能调用 CancelFunc 将泄漏子代，直到父代被取消或定时器触发。go vet工具检查所有流程控制路径上使用 CancelFuncs。
 
-##小结
+## 小结
 1.不要把Context放在结构体中，要以参数的方式传递
 2.以Context作为参数的函数方法，应该把Context作为第一个参数，放在第一位。
 3.给一个函数方法传递Context的时候，不要传递nil，如果不知道传递什么，就使用context.TODO
